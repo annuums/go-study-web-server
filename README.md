@@ -69,3 +69,4 @@ $ $GOPATH/bin/goconvey
 
 - dev.whoan(싹난 감자) in Annuums
   - [Github](https://github.com/dev-whoan)
+  - dev.whoan@gmail.com

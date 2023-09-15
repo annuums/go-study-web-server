@@ -20,53 +20,62 @@ import (
 	"net/http"
 )
 
+type HomeHandler struct {}
 
-func HomeHandler(res http.ResponseWriter, req *http.Request) {
-	res.WriteHeader(http.StatusOK)
-	fmt.Fprintln(res, "Hello, Home!")
+/**
+type Handler interface {
+	ServeHTTP(ResponseWriter, *Request)
 }
-```
+*/
+func (home *HomeHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+    //* 실제로 어떤 URL이 요청되는지 확인해 보세요.
+	fmt.Printf("Requested %s\n", req.URL.Path)
 
-- 위 코드에서 `func HomeHandler(...)`는 함수 명은 다르지만, 실제로 `Handler` 인터페이스의 `ServeHTTP`와 똑같이 생겼어요. 즉, 해당 함수를 통해 요청을 처리할 수 있어요.
+	switch req.URL.Path {
+	case "/":
+		indexHandler(res, req)
+	case "/test":
+		testHandler(res, req)
+	default:
+		http.NotFound(res, req)
+	}
+}
 
-- `handlers`는 실제로 요청을 처리하는 함수를 담당하는 것이지, 어떤 `경로`를 어떤 `Http Method`로 요청 받았을 때, ... 등은 신경쓰지 않아요. 다만, 이러한 요청을 `어떻게 처리` 할 거야! 를 담당하는 것이죠.
+func indexHandler(res http.ResponseWriter, req *http.Request) {
+	switch req.Method {
+	case http.MethodGet:
+		getIndex(res, req)
+	case http.MethodPost:
+		postIndex(res, req)
+	}
+}
 
-#### 한 줄씩 톺아보기
+func getIndex(res http.ResponseWriter, req *http.Request) {
+	res.WriteHeader(http.StatusOK)
+	fmt.Fprint(res, "Hello, This is Get Handler! You can [GET, POST] to /home")
+}
 
-```go
-func HomeHandler(res http.ResponseWriter, req *http.Request) {
-    ...
-```
+func postIndex(res http.ResponseWriter, req *http.Request) {
+	res.WriteHeader(http.StatusOK)
+	fmt.Fprint(res, "Helo, This is Post Handler! You can [GET, POST] to /home")
+}
 
-- 해당 구문은 하나의 `handler` 함수를 정의한답니다. 일반적으로 웹 통신은 다음과 같이 동작해요
-  1. Client가 Server로 `요청`을 보낸다.
-  2. Server는 해당 `요청`이 유효한지 확인한다.
-  3. Server는 `요청`을 처리하는 Logic을 실행한다.
-  4. Server는 `응답`을 Client에게 반환한다.
-- 여기서 `요청`은 `req *http.Request` 인자로, `응답`은 `res http.ResponseWriter` 인자를 통해 처리해요.
-
-```go
 ...
-    res.WriteHeader(http.StatusOK)
-    ...
 ```
 
-- 해당 구문은 `응답`을 처리합니다. 여기서는 `응답 코드`를 `http.StatusOK`, 즉 `200`으로 설정하여 반환해요.
-  - [Http Response Code 자세히 보기](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+- 위 코드는 `ch1`과는 다르게 `Handler`를 구현하여 사용하고 있어요. Router 형식으로 생성하여, 최초 요청을 전달받은 뒤 URI 기준으로 분기하고 있어요.
+- 상위 URI인 `/home/*`의 요청에 대해 `/home` 뒷부분의 URI Segments 중, `/`과 `/test`만 처리하는 것을 확인할 수 있어요.
+  - 특히 각 URL에 등록되는 기능이 많아질수록, `/home`과 `/home/test` 또한 라우터를 분기시켜 따로 관리할 수 있어요.
+- 우리는 URL 구분에서 그치지 않고, 각 Handler 아래에서 요청된 `Http Methods`에 따라 처리를 나누고 있어요. 우리는 그 중 `GET`과 `POST`만 처리하고 있답니다.
 
-```go
-    ...
-    fmt.Fprintln(res, "Hello, Home!")
-    ...
-```
+- 실제로 `localhost:3000/home`과 `localhost:3000/home/test`에 GET, POST 요청을 각각 보내면,
+  `Hello, This is {GET|POST} Handler! You can [GET, POST] to {/home|/home/test}` 응답을 확인할 수 있어요.
+- 이처럼 라우터 패턴과 MVC 패턴을 조합한다면, 별도의 웹 서버 프레임워크 없이 웹 서버를 구현할 수 있답니다.
 
-- 해당 구문은 `응답`을 처리합니다. 여기서는 `응답 메시지`를 작성하고 있어요. `HomeHandler`를 통해 처리되는 요청은, `Hello, Home!`이라는 내용을 받을거에요
+- `req.URL.Path`는 `req *http.Request`로 전달된 요청의 `URL`을 확인할 수 있어요.
+- `req.Method`는 `req *http.Request`로 전달된 요청의 `Http Method`를 확인할 수 있어요.
 
-#### 종합하면...
-
-- `HomeHandler`로 처리되는 요청은 `200` 응답 코드와 `Hello, Home!` 메시지를 반환 받을 거에요.
-
-#### Handler 인터페이스
+#### Handler 인터페이스 다시보기
 
 - Golang의 `net/http`는 HTTP 요청을 처리하기 위해 `Handler`라는 인터페이스를 구현해요. 인터페이스로 추상화 되어 있기 때문에, 요청을 처리하는 함수, 객체 등을 쉽게 만들 수 있어요.
 
