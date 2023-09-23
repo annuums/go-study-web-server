@@ -3,13 +3,13 @@ package app
 import (
 	"net/http"
 
-	"github.com/annuums/go-study-web-server/handlers"
+	routers "github.com/annuums/go-study-web-server/routes"
 )
 
 func NewHandler() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle("/home/", http.StripPrefix("/home", &handlers.HomeRouter{}))
+	mux.Handle("/home/", http.StripPrefix("/home", &routers.HomeRouter{}))
 	mux.Handle("/", http.NotFoundHandler())
 
 	return mux
