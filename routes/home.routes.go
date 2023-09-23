@@ -22,7 +22,7 @@ func (home *HomeRouter) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	handler := &handlers.HomeHandler{}
 	switch req.URL.Path {
 	case "/":
-		handler.IndexHandler(res, req)
+		handler.Handles(res, req)
 	default:
 		http.NotFound(res, req)
 	}

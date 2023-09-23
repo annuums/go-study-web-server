@@ -7,7 +7,7 @@ import (
 
 type HomeHandler struct{}
 
-func (handler *HomeHandler) IndexHandler(res http.ResponseWriter, req *http.Request) {
+func (handler *HomeHandler) Handles(res http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case http.MethodGet:
 		handler.getIndex(res, req)
