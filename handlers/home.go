@@ -5,16 +5,18 @@ import (
 	"net/http"
 )
 
-type HomeHandler struct {}
+type HomeRouter struct{}
 
-/**
-type Handler interface {
-	ServeHTTP(ResponseWriter, *Request)
-}
+/*
+*
+
+	type Handler interface {
+		ServeHTTP(ResponseWriter, *Request)
+	}
 */
-func (home *HomeHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+func (home *HomeRouter) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	fmt.Printf("Requested %s\n", req.URL.Path)
-	
+
 	switch req.URL.Path {
 	case "/":
 		indexHandler(res, req)
@@ -50,7 +52,7 @@ func testHandler(res http.ResponseWriter, req *http.Request) {
 		getTest(res, req)
 	case http.MethodPost:
 		postTest(res, req)
-	}	
+	}
 }
 
 func getTest(res http.ResponseWriter, req *http.Request) {
