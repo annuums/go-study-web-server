@@ -8,6 +8,11 @@ import (
 )
 
 func main() {
-	log.Println("Server is running on :3000...")
-	http.ListenAndServe(":3000", app.NewHandler())
+
+	log.Println("Server is running on :5050...")
+	err := http.ListenAndServe(":5050", app.NewHandler())
+	if err != nil {
+
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
