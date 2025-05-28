@@ -16,16 +16,18 @@
 
 ```go
 func main() {
-  err := log.Println("Server is running on :3000...")
+
+  log.Println("Server is running on :5050...")
+  err := http.ListenAndServe(":5050", app.NewHandler())
   if err != nil {
-    log.Fatal(err)
+
+    log.Fatalf("Failed to start server: %v", err)
   }
-  http.ListenAndServe(":3000", app.NewHandler())
 }
 ```
 
 - 우리의 웹 서버는 `app` 패키지에서 `NewHandler`를 바탕으로 웹 서버를 실행하고 있어요.
-- 주소는 `localhost:3000`이랍니다.
+- 주소는 `localhost:5050`이랍니다.
 - 만약 서버 실행에 실패한다면, 에러를 출력하고 종료돼요.
 
 #### 서버 실행
