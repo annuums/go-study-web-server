@@ -68,7 +68,7 @@ func postIndex(res http.ResponseWriter, req *http.Request) {
   - 특히 각 URL에 등록되는 기능이 많아질수록, `/home`과 `/home/test` 또한 라우터를 분기시켜 따로 관리할 수 있어요.
 - 우리는 URL 구분에서 그치지 않고, 각 Handler 아래에서 요청된 `Http Methods`에 따라 처리를 나누고 있어요. 우리는 그 중 `GET`과 `POST`만 처리하고 있답니다.
 
-- 실제로 `localhost:3000/home`과 `localhost:3000/home/test`에 GET, POST 요청을 각각 보내면,
+- 실제로 `localhost:5050/home`과 `localhost:5050/home/test`에 GET, POST 요청을 각각 보내면,
   `Hello, This is {GET|POST} Handler! You can [GET, POST] to {/home|/home/test}` 응답을 확인할 수 있어요.
 - 이처럼 라우터 패턴과 MVC 패턴을 조합한다면, 별도의 웹 서버 프레임워크 없이 웹 서버를 구현할 수 있답니다.
 
