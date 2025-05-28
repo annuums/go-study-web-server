@@ -1,6 +1,6 @@
 # annuums
 
-- 본 Repository는 annuums에서 제작한 Become a DevOps/SRE Engineer 프로젝트 중 [Golang - 웹 서버 정보하기] 코드 저장소 입니다.
+- 본 Repository는 annuums에서 제작한 Become a DevOps/SRE Engineer 프로젝트 중 [Golang - 웹 서버 정복하기] 코드 저장소 입니다.
 
 ---
 
@@ -8,8 +8,8 @@
 
 ### 학습 목표
 
-- `Home Router`를 분리하여 만들어 `/home`으로 발생하는 요청을 처리할 수 있다.
-- Router, Handler를 분리하여 작성하는 이유를 이해한다.
+- Handlers 폴더를 분리하여 `/home`과 관련된 요청을 요청을 처리할 수 있다.
+- 웹 서버 구조에 대해 생각해 본다.
 
 #### starter.go 톺아보기
 
