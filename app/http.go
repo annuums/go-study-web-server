@@ -9,7 +9,7 @@ import (
 func NewHandler() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle("/home/", http.StripPrefix("/home", &routers.HomeRouter{}))
+	mux.Handle("/student/", http.StripPrefix("/student", &routers.StudentRouter{}))
 	mux.Handle("/", http.NotFoundHandler())
 
 	return mux
